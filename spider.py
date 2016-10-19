@@ -3,21 +3,14 @@ import re
 import time
 import os
 import sys
-
-#显示下载进度  
-def schedule(a,b,c):  
-    '''
-    a:已经下载的数据块 
-    b:数据块的大小 
-    c:远程文件的大小 
-   '''  
-    per = 100.0 * a * b / c  
-    if per > 100 :  
-        per = 100  
-    print('%.2f%%' % per)
+from PIL import Image
 
 def getCurrentDate():
     return str(t.__getattribute__("tm_year"))+"-"+str(t.__getattribute__("tm_mon"))+"-"+str(t.__getattribute__("tm_mday"))
+
+def filterImage(folderPath, width, height):
+    pass
+
 
 def getHtml(url):
     response = urllib.request.urlopen(url)
@@ -32,33 +25,38 @@ def getTitle(html):
         title = m[0]
     else:
         title = getCurrentDate()
+    print(title)
     return title
 
-def downImg(html):
+def downImg(html, foldername):
     reg = r'\s+src="(http.*?\.jpg)"'
     imgre = re.compile(reg)
     imglist = re.findall(imgre, html)
     t = time.localtime(time.time())
-    foldername = getTitle(html)
-    picpath = 'D:\\ImageDownload\\%s' % (foldername)
+    dicpath = 'D:\\ImageDownload\\%s' % (foldername)
 
-    if not os.path.exists(picpath):
-        os.makedirs(picpath)
+    if not os.path.exists(dicpath):
+        os.makedirs(dicpath)
     x = 0
     for imgurl in imglist:
-        target = picpath+'\\%s.jpg' % x  
+        target = dicpath+'\\%s.jpg' % x  
         #print('Downloading image to location: ' + target + '\nurl=' + imgurl)
         try:
             image = urllib.request.urlretrieve(imgurl, target)
-            print('%s%s%s',len(imglist),'/',x)
+            print('%s%s%s' % (x, '/', len(imglist)))
         except:
             print(sys.exc_info()[0])
         else:
             x += 1
+    return dicpath
 
-def getMenu():
-    pass
-        
+def filterImage(dicpath, width, height):
+    for filename in os.listdir(dicpath):
+        picpath = os.path.join(dicpath, filename)
+        image = Image.open(picpath)
+        if image.size < (width, height):
+            os.remove(picpath)
+            
 
 if __name__ == '__main__':
     isExit = True
@@ -68,8 +66,16 @@ if __name__ == '__main__':
             isExit = False
         else:
             html = getHtml(url)
-            print("Read html finished.")
-            downImg(html)
+            foldername = getTitle(html)
+            dicpath = downImg(html, foldername)
             print("Download has finished.")
+            #isFilterSize = input("Do you want to filter the size?(yes/no):")
+            #iisFilterSize == "yes" or isFilterSize == "y"
+            if(False):
+                width = int(input("Please enter width:"))
+                height = int(input("Please enter height:"))
+                filterImage(dicpath, width, height)
+                print("Filter has finished.")
+            
         
            
