@@ -56,9 +56,15 @@ def filterImage(dicpath, width, height):
         image = Image.open(picpath)
         if image.size < (width, height):
             os.remove(picpath)
-            
+
+def writeUrl(targetPath, content):
+    f = open(targetPath, "a")
+    f.write(content)
+    f.close()            
 
 if __name__ == '__main__':
+    targetDicPath = "D:\\ImageDownload"
+    logUrlFileName = "readme.txt"
     isExit = True
     while isExit:
         url = input("Please enter the URL:")
@@ -67,6 +73,7 @@ if __name__ == '__main__':
         else:
             html = getHtml(url)
             foldername = getTitle(html)
+            writeUrl(os.path.join(targetDicPath, logUrlFileName), "\n%s(%s)" % (url, foldername))
             dicpath = downImg(html, foldername)
             print("Download has finished.")
             #isFilterSize = input("Do you want to filter the size?(yes/no):")
