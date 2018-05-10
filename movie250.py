@@ -1,15 +1,15 @@
 #!/usr/bin/env python
-# encoding=utf-8
-# coding=gbk
+# -*-coding:utf-8 -*-
+
 import requests
 import re
 import codecs
 from bs4 import BeautifulSoup
 from openpyxl import Workbook
 wb = Workbook()
-dest_filename = 'movie.xlsx'
+dest_filename = 'movie250.xlsx'
 ws1 = wb.active
-ws1.title = "movietop250"
+ws1.title = "movie250"
 
 DOWNLOAD_URL = 'http://movie.douban.com/top250/'
 
@@ -36,9 +36,13 @@ def get_li(doc):
             'span', attrs={'class': 'title'}).get_text()  # 电影名字
         level_star = i.find(
             'span', attrs={'class': 'rating_num'}).get_text()  # 评分
-        star = i.find('div', attrs={'class': 'star'})
-        star_num = star.find(text=re.compile('评价'))  # 评价
-
+        star_span = i.find('div', attrs={'class': 'star'}).find_all('span')
+        '''star_num = star.findtext=re.compile('评价')  # 评价'''
+        star_num = 0
+        if star_span and len(star_span) > 0:
+            star_num = re.findall('\d+', star_span[-1].get_text())
+            if len(star_num) > 0:
+                star_num = star_num[0]
         info = i.find('span', attrs={'class': 'inq'})  # 短评
         if info:  # 判断是否有短评
             info_list.append(info.get_text())
@@ -49,10 +53,9 @@ def get_li(doc):
         name.append(movie_name)
         star_con.append(star_num)
     page = soup.find('span', attrs={'class': 'next'}).find('a')  # 获取下一页
-    if page is not None and page['href'] is not None:
+    if page:
         return name, star_con, score, info_list, DOWNLOAD_URL + page['href']
-    else:
-        return name, star_con, score, info_list, None
+    return name, star_con, score, info_list, None
 
 
 def main():
