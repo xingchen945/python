@@ -6,9 +6,9 @@ import os
 # 测试地址：https://tieba.baidu.com/p/5634733664?see_lz=1
 
 def main():
-    url = raw_input('please enter the url:')  #贴吧楼主地址
-    path = raw_input('please enter the save path:') #保存路径
-    total = input('please enter the max pages:') #总页数
+    url = input('please enter the url:')  #贴吧楼主地址
+    path = input('please enter the save path:') #保存路径
+    total = int(input('please enter the max pages:')) #总页数
 
     #url = 'https://tieba.baidu.com/p/5634733664?see_lz=1'
     #path = 'D:\Download\TieBa'
@@ -55,7 +55,7 @@ def downloadImg(path, imgUrl):
     response = requests.get(imgUrl)
     if response.status_code == 200:
         output(imgUrl)
-        fileName = os.path.join(path, imgUrl.split('/')[-1]).encode('gb18030')
+        fileName = os.path.join(path, imgUrl.split('/')[-1])
         #fileName = imgUrl.split('/')[-1] 
         with open(fileName, 'wb') as f:
             f.write(response.content)
