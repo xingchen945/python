@@ -41,15 +41,17 @@ def download(exe_path, download_url):
 
 
 if __name__ == '__main__':
-    dict_films = getNewFilms()
-    output_films = outputFilms(dict_films)
-    num = int(input("请输入要下载电影编号："))
-    film_url = dict_films[output_films[num]]
-    download_url = getDownloadUrl(film_url)
     input_xunlei_path = input("请输入迅雷路径或者直接修改源码的默认路径：")
     if input_xunlei_path.strip() == "":
         input_xunlei_path = default_xunlei_path
-    download(input_xunlei_path, download_url)
+    dict_films = getNewFilms()
+    output_films = outputFilms(dict_films)
+    num = int(input("请输入要下载电影编号或者0结束："))
+    while num != 0:
+        film_url = dict_films[output_films[num]]
+        download_url = getDownloadUrl(film_url)
+        download(input_xunlei_path, download_url)
+        num = int(input("请输入要下载电影编号或者0结束："))
     print("再见")
         
 
