@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-import win32api
+import platform
+#import win32api
 
 url = 'http://www.dytt8.net/'
 default_xunlei_path = 'D:\Program Files (x86)\Thunder Network\Thunder9\Program\Thunder.exe'
@@ -36,7 +37,12 @@ def getDownloadUrl(film_url):
         return soup.find_all("table")[1].find("a").attrs["href"]
 
 def download(exe_path, download_url):
-    win32api.ShellExecute(0, "open", exe_path, download_url, '', 1)
+    sysstr = platform.system()
+    if sysstr == "Windows":
+        pass
+        #win32api.ShellExecute(0, "open", exe_path, download_url, '', 1)
+    else:
+        print(download_url)
 
 
 
