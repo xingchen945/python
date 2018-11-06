@@ -2,26 +2,32 @@
 import requests
 from bs4 import BeautifulSoup
 import os
+import json
 
 # 测试地址：https://tieba.baidu.com/p/5634733664?see_lz=1
 
 def main():
     url = input('please enter the url:')  #贴吧楼主地址
-    path = input('please enter the save path:') #保存路径
+    #path = input('please enter the save path:') #保存路径
     total = int(input('please enter the max pages:')) #总页数
 
     #url = 'https://tieba.baidu.com/p/5634733664?see_lz=1'
     #path = 'D:\Download\TieBa'
     #total = 3
 
-    if not path:
-        path = 'D:\Download\TieBa'
+    with open('./config/tieba.json', 'r') as config:
+        dict_config = json.load(config)
+        path = dict_config['default_path']
+
 
     pn = 0 # 初始第一页
 
     while pn < total:
         pn = pn + 1
-        tempUrl = url + '&pn=' + str(pn)
+        if url.find('?') > -1:
+            tempUrl = url + '&pn=' + str(pn)
+        else:
+            tempUrl = url + '?pn=' + str(pn)
 
         response = downloadUrl(tempUrl)
 
