@@ -2,20 +2,31 @@
 import requests
 from bs4 import BeautifulSoup
 import os
+import json
 
-# 测试地址：https://tieba.baidu.com/p/5634733664?see_lz=1
+# 测试地址：https://tieba.baidu.com/p/4440135874?see_lz=1&pn=1
+# 总页数：<span class="red">xx</span>
+
+config_path = './config/tieba.json'
+save_path = ''
+see_lz = 1 
+
+def loadConfig():
+    pass
+
+
 
 def main():
     url = input('please enter the url:')  #贴吧楼主地址
-    path = input('please enter the save path:') #保存路径
+
+    if len(save_path) == 0:
+        save_path = input('please enter the save path:') #保存路径
+
     total = int(input('please enter the max pages:')) #总页数
 
-    #url = 'https://tieba.baidu.com/p/5634733664?see_lz=1'
-    #path = 'D:\Download\TieBa'
-    #total = 3
 
-    if not path:
-        path = 'D:\Download\TieBa'
+    if not save_path:
+        save_path = './'
 
     pn = 0 # 初始第一页
 
