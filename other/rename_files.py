@@ -9,7 +9,12 @@ def rename_files(path, replace_name):
 
 
 if __name__ == "__main__":
-    path = input("请输入文件夹地址：")
-    replace_name = input("请输入要替换的字符串：")
-    rename_files(path, replace_name)
-    print("修改成功")
+    isExit = False
+    while not isExit:
+        path = input("请输入文件夹地址：")
+        if path == 'exit':
+            isExit = True
+        else:
+            replace_name = input("请输入要替换的字符串：")
+            rename_files(path, replace_name)
+            print("修改成功")

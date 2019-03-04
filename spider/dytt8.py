@@ -4,14 +4,20 @@ import platform
 #import win32api
 
 url = 'http://www.dytt8.net/'
+headers = {
+    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
+}
 default_xunlei_path = 'D:\Program Files (x86)\Thunder Network\Thunder9\Program\Thunder.exe'
 
 # 获取最近电影
+
+
 def getNewFilms():
-    dict_films = {}    
-    res = requests.get(url)
+    dict_films = {}
+    res = requests.get(url, headers = headers)
     if res.status_code == 200:
-        soup = BeautifulSoup(res.content, 'html.parser', from_encoding="GB18030")
+        soup = BeautifulSoup(res.content, 'html.parser',
+                             from_encoding="GB18030")
         new_films = soup.select('div[class="co_content8"]')[0].select("tr")
         for item in new_films[1:]:
             tag = item.select("a")[1]
@@ -21,6 +27,8 @@ def getNewFilms():
     return dict_films
 
 # 输出最近电影
+
+
 def outputFilms(dict_films):
     output_films = {}
     index = 0
@@ -30,11 +38,14 @@ def outputFilms(dict_films):
         print("%s 、 %s" % (index, item))
     return output_films
 
+
 def getDownloadUrl(film_url):
     res = requests.get(film_url)
     if res.status_code == 200:
-        soup = BeautifulSoup(res.content, 'html.parser', from_encoding="GB18030")
+        soup = BeautifulSoup(res.content, 'html.parser',
+                             from_encoding="GB18030")
         return soup.find_all("table")[1].find("a").attrs["href"]
+
 
 def download(exe_path, download_url):
     sysstr = platform.system()
@@ -43,7 +54,6 @@ def download(exe_path, download_url):
         #win32api.ShellExecute(0, "open", exe_path, download_url, '', 1)
     else:
         print(download_url)
-
 
 
 if __name__ == '__main__':
@@ -59,5 +69,3 @@ if __name__ == '__main__':
         download(input_xunlei_path, download_url)
         num = int(input("请输入要下载电影编号或者0结束："))
     print("再见")
-        
-
