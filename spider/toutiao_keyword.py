@@ -61,7 +61,7 @@ def save_image(item):
 
 
 def main(offset):
-    keyword = input('please input the key:')
+    keyword = input('please input the key:`')
     json = get_page(offset, keyword)
     for item in get_images(json):
         print(item)
