@@ -7,7 +7,7 @@ url = 'http://www.dytt8.net/'
 headers = {
     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_0) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11'
 }
-default_xunlei_path = 'D:\Program Files (x86)\Thunder Network\Thunder9\Program\Thunder.exe'
+default_xunlei_path = 'D:\Program Files (x86)\Thunder Network\Thunder\Program\Thunder.exe'
 
 # 获取最近电影
 
